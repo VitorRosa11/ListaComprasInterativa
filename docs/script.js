@@ -1,147 +1,133 @@
-const produtosInfo = {
-  Frutas: [
-    { nome: "Maçã", preco: 2.5 },
-    { nome: "Banana", preco: 1.8 },
-    { nome: "Laranja", preco: 2.0 },
-    { nome: "Abacaxi", preco: 4.0 },
-    { nome: "Uva", preco: 3.5 },
-    { nome: "Melancia", preco: 7.0 },
-    { nome: "Mamão", preco: 3.8 },
-    { nome: "Pera", preco: 4.2 },
-    { nome: "Manga", preco: 3.0 },
-    { nome: "Kiwi", preco: 5.0 },
-    { nome: "Morango", preco: 6.0 },
-    { nome: "Limão", preco: 1.5 },
-    { nome: "Coco", preco: 4.5 },
-    { nome: "Ameixa", preco: 4.0 },
-    { nome: "Pêssego", preco: 3.8 }
-  ],
-  Legumes: [
-    { nome: "Cenoura", preco: 2.0 },
-    { nome: "Batata", preco: 2.5 },
-    { nome: "Abobrinha", preco: 3.0 },
-    { nome: "Berinjela", preco: 3.5 },
-    { nome: "Beterraba", preco: 2.8 },
-    { nome: "Chuchu", preco: 2.2 },
-    { nome: "Abóbora", preco: 2.5 },
-    { nome: "Pepino", preco: 2.0 },
-    { nome: "Pimentão", preco: 3.0 },
-    { nome: "Quiabo", preco: 2.5 }
-  ],
-  Bebidas: [
-    { nome: "Água", preco: 1.0 },
-    { nome: "Refrigerante", preco: 5.0 },
-    { nome: "Suco Natural", preco: 6.5 },
-    { nome: "Chá Gelado", preco: 4.0 },
-    { nome: "Cerveja", preco: 5.5 },
-    { nome: "Vinho", preco: 20.0 },
-    { nome: "Energético", preco: 7.5 },
-    { nome: "Isotônico", preco: 6.0 },
-    { nome: "Leite", preco: 4.2 }
-  ],
-  Higiene: [
-    { nome: "Sabonete", preco: 2.0 },
-    { nome: "Shampoo", preco: 7.0 },
-    { nome: "Condicionador", preco: 8.0 },
-    { nome: "Desodorante", preco: 5.5 },
-    { nome: "Pasta de Dente", preco: 3.5 },
-    { nome: "Escova de Dente", preco: 4.0 },
-    { nome: "Fio Dental", preco: 3.0 },
-    { nome: "Enxaguante Bucal", preco: 6.0 },
-    { nome: "Papel Higiênico", preco: 10.0 }
-  ],
-  Limpeza: [
-    { nome: "Detergente", preco: 2.5 },
-    { nome: "Sabão em Pó", preco: 8.0 },
-    { nome: "Amaciante", preco: 6.0 },
-    { nome: "Água Sanitária", preco: 3.0 },
-    { nome: "Desinfetante", preco: 4.5 },
-    { nome: "Esponja", preco: 2.0 },
-    { nome: "Vassoura", preco: 15.0 },
-    { nome: "Rodo", preco: 12.0 },
-    { nome: "Pano de Chão", preco: 3.5 }
-  ]
+const lista = document.getElementById("lista");
+const input = document.getElementById("itemInput");
+const precoInput = document.getElementById("precoInput");
+
+const emojis = {
+  maçã: "🍎",
+  banana: "🍌",
+  tomate: "🍅",
+  cenoura: "🥕",
+  leite: "🥛",
+  pão: "🍞",
+  arroz: "🍚",
+  feijão: "🫘",
+  alface: "🥬",
+  uva: "🍇",
+  laranja: "🍊"
 };
 
-const selectCategoria = document.getElementById("categoria");
-const selectProduto = document.getElementById("produto");
-const inputQuantidade = document.getElementById("quantidade");
-const btnAdicionar = document.getElementById("adicionar");
-const listaCompras = document.getElementById("lista-compras");
-const totalCompra = document.getElementById("total");
+const categorias = {
+  frutas: ["maçã", "banana", "laranja", "uva"],
+  vegetais: ["cenoura", "alface", "tomate"],
+  laticínios: ["leite"]
+};
 
-let total = 0;
+window.onload = () => {
+  const itensSalvos = JSON.parse(localStorage.getItem("listaCompras")) || [];
+  itensSalvos.forEach(item =>
+    criarItem(item.texto, item.comprado, item.categoria, item.preco)
+  );
+};
 
-// Preenche categorias
-for (let categoria in produtosInfo) {
-  const option = document.createElement("option");
-  option.value = categoria;
-  option.textContent = categoria;
-  selectCategoria.appendChild(option);
+function adicionarItem() {
+  const texto = input.value.trim().toLowerCase();
+  const preco = parseFloat(precoInput.value);
+
+  if (texto === "") {
+    alert("Digite o nome do item!");
+    return;
+  }
+
+  if (isNaN(preco) || preco <= 0) {
+    alert("Informe um preço válido!");
+    return;
+  }
+
+  criarItem(texto, false, undefined, preco);
+  salvarLista();
+  input.value = "";
+  precoInput.value = "";
 }
 
-// Atualiza produtos
-selectCategoria.addEventListener("change", () => {
-  const produtos = produtosInfo[selectCategoria.value];
-  selectProduto.innerHTML = '<option value="">Selecione o produto</option>';
-
-  if (produtos) {
-    produtos.forEach(produto => {
-      const option = document.createElement("option");
-      option.value = produto.nome;
-      option.textContent = `${produto.nome} - R$ ${produto.preco.toFixed(2)}`;
-      selectProduto.appendChild(option);
-    });
-  }
-});
-
-// Adiciona item
-btnAdicionar.addEventListener("click", () => {
-  const categoria = selectCategoria.value;
-  const produtoNome = selectProduto.value;
-  const quantidade = parseInt(inputQuantidade.value);
-
-  if (!categoria) {
-    alert("Por favor, selecione uma categoria!");
-    return;
-  }
-
-  if (!produtoNome) {
-    alert("Por favor, selecione um produto!");
-    return;
-  }
-
-  if (isNaN(quantidade) || quantidade <= 0) {
-    alert("Por favor, insira uma quantidade válida!");
-    return;
-  }
-
-  const produto = produtosInfo[categoria].find(p => p.nome === produtoNome);
-  const precoTotal = produto.preco * quantidade;
-
+function criarItem(texto, comprado, categoria = detectarCategoria(texto), preco = 0) {
   const li = document.createElement("li");
-  li.textContent = `${produtoNome} (${quantidade}x) - R$ ${precoTotal.toFixed(2)}`;
+  li.className = comprado ? "comprado" : "";
+  li.dataset.categoria = categoria;
+  li.dataset.preco = preco;
 
-  const btnRemover = document.createElement("button");
-  btnRemover.textContent = "Remover";
-  btnRemover.addEventListener("click", () => {
-    listaCompras.removeChild(li);
-    total -= precoTotal;
-    atualizarTotal();
+  const emoji = emojis[texto] ? emojis[texto] + " " : "";
+  const precoFormatado = preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  li.innerHTML = `
+    <span onclick="alternarComprado(this)">
+      ${emoji}${texto} <small>(${categoria})</small> - <strong>${precoFormatado}</strong>
+    </span>
+    <button onclick="removerItem(this)">❌</button>
+  `;
+
+  lista.appendChild(li);
+  atualizarContador();
+}
+
+function detectarCategoria(texto) {
+  for (let cat in categorias) {
+    if (categorias[cat].includes(texto)) return cat;
+  }
+  return "outros";
+}
+
+function alternarComprado(span) {
+  span.parentElement.classList.toggle("comprado");
+  salvarLista();
+  atualizarContador();
+}
+
+function removerItem(btn) {
+  const li = btn.parentElement;
+  li.classList.add("removendo");
+  setTimeout(() => {
+    li.remove();
+    salvarLista();
+    atualizarContador();
+  }, 300);
+}
+
+function limparLista() {
+  if (confirm("Tem certeza que deseja limpar toda a lista?")) {
+    lista.innerHTML = "";
+    localStorage.removeItem("listaCompras");
+    atualizarContador();
+  }
+}
+
+function salvarLista() {
+  const itens = Array.from(lista.children).map(li => ({
+    texto: li.textContent.replace("❌", "").trim().replace(/.+/, "").replace(/- R\$.*$/, "").trim(),
+    comprado: li.classList.contains("comprado"),
+    categoria: li.dataset.categoria,
+    preco: parseFloat(li.dataset.preco)
+  }));
+  localStorage.setItem("listaCompras", JSON.stringify(itens));
+}
+
+function filtrarCategoria() {
+  const filtro = document.getElementById("filtro").value;
+  Array.from(lista.children).forEach(li => {
+    if (filtro === "todos" || li.dataset.categoria === filtro) {
+      li.style.display = "flex";
+    } else {
+      li.style.display = "none";
+    }
   });
+}
 
-  li.appendChild(btnRemover);
-  listaCompras.appendChild(li);
+function atualizarContador() {
+  const total = lista.children.length;
+  const comprados = Array.from(lista.children).filter(li => li.classList.contains("comprado")).length;
+  const totalGasto = Array.from(lista.children).reduce((soma, li) => {
+    return soma + (li.classList.contains("comprado") ? parseFloat(li.dataset.preco) : 0);
+  }, 0);
 
-  total += precoTotal;
-  atualizarTotal();
-
-  // Resetar campos
-  selectCategoria.value = "";
-  selectProduto.innerHTML = '<option value="">Selecione o produto</option>';
-  inputQuantidade.value = "";
-});
-
-function atualizarTotal() {
-  totalCompra.textContent = `Total: R$ ${total.toFixed(2)}`;
+  document.getElementById("contador").textContent = `${total} itens | ${comprados} comprados`;
+  document.getElementById("total").textContent = `Total: R$ ${totalGasto.toFixed(2).replace(".", ",")}`;
 }

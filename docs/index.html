@@ -1,48 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lista de Compras</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Compras Sustentável</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Lista de Compras</h1>
+    <h1>Lista de Compras interativa</h1>
 
 
-    <form id="form-produto">
-      <select id="categoria" required>
-        <option value="">Selecione a categoria</option>
-        <option value="Frutas">🍎 Frutas</option>
-        <option value="Legumes">🥕 Legumes</option>
-        <option value="Verduras">🥬 Verduras</option>
-        <option value="Padaria">🥖 Padaria</option>
-        <option value="Açougue">🥩 Açougue</option>
-        <option value="Limpeza">🧼 Limpeza</option>
-        <option value="Laticínios">🧀 Laticínios</option>
-        <option value="Mercearia">🛒 Mercearia</option>
-        <option value="Higiene">🧴 Higiene</option>
-        <option value="Produtos Variados">📦 Produtos Variados</option>
+    <div class="input-section">
+      <input type="text" id="itemInput" placeholder="Digite um produto:" />
+      <input type="number" id="precoInput" placeholder="Preço R$" step="0.01" />
+      <button onclick="adicionarItem()">Adicionar</button>
+    </div>
+
+
+    <div class="status-bar">
+      <div id="contador">0 itens | 0 comprados</div>
+      <div id="total">Total: R$ 0.00</div>
+    </div>
+
+
+    <div class="filtro-bar">
+      <select id="filtro" onchange="filtrarCategoria()">
+        <option value="todos">Todas categorias</option>
+        <option value="frutas">Frutas</option>
+        <option value="vegetais">Vegetais</option>
+        <option value="laticínios">Laticínios</option>
+        <option value="outros">Outros</option>
       </select>
+    </div>
 
 
-      <input type="text" id="nome" placeholder="Nome do produto" list="sugestoes-produtos" required />
-      <datalist id="sugestoes-produtos"></datalist>
+    <ul id="lista"></ul>
 
 
-      <input type="number" id="quantidade" placeholder="Quantidade" required />
-      <input type="number" id="preco" placeholder="Preço/unidade" step="0.01" required />
-      <button type="submit">Adicionar</button>
-    </form>
-
-
-    <div class="lista" id="lista-compras"></div>
-    <div class="total" id="total"></div>
-    <button id="limpar-lista">Limpar Lista</button>
+    <button class="limpar" onclick="limparLista()">Limpar Tudo</button>
   </div>
-
-
   <script src="script.js"></script>
 </body>
 </html>
