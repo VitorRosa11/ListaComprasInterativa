@@ -1,45 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Compras Sustentável</title>
+  <title>Lista de Compras</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Lista de Compras interativa</h1>
+  <div class="lista-compras">
+    <h1>Lista de compras</h1>
 
 
-    <div class="input-section">
-      <input type="text" id="itemInput" placeholder="Digite um produto:" />
-      <input type="number" id="precoInput" placeholder="Preço R$" step="0.01" />
-      <button onclick="adicionarItem()">Adicionar</button>
+    <div class="filtros">
+      <input type="text" id="pesquisa" placeholder="Buscar produto..." />
     </div>
 
 
-    <div class="status-bar">
-      <div id="contador">0 itens | 0 comprados</div>
-      <div id="total">Total: R$ 0.00</div>
-    </div>
-
-
-    <div class="filtro-bar">
-      <select id="filtro" onchange="filtrarCategoria()">
-        <option value="todos">Todas categorias</option>
-        <option value="frutas">Frutas</option>
-        <option value="vegetais">Vegetais</option>
-        <option value="laticínios">Laticínios</option>
-        <option value="outros">Outros</option>
+    <div class="adicionar">
+      <select id="produtoSelect">
+        <!-- Produtos são carregados via script.js -->
       </select>
+      <input type="number" id="quantidade" min="1" value="1" />
+      <button id="btnAdicionar">Adicionar</button>
     </div>
 
 
-    <ul id="lista"></ul>
+    <div id="listaProdutos"></div>
 
 
-    <button class="limpar" onclick="limparLista()">Limpar Tudo</button>
+    <div class="total">
+      Total: R$ <span id="total">0.00</span>
+    </div>
+
+
+    <button id="btnLimpar">Limpar Lista</button>
   </div>
+
+
   <script src="script.js"></script>
 </body>
 </html>

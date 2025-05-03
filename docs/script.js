@@ -1,133 +1,105 @@
-const lista = document.getElementById("lista");
-const input = document.getElementById("itemInput");
-const precoInput = document.getElementById("precoInput");
+const produtosDisponiveis = [
+  { nome: "Maçã", preco: 2.5, categoria: "Frutas" },
+  { nome: "Banana", preco: 2.1, categoria: "Frutas" },
+  { nome: "Laranja", preco: 3.0, categoria: "Frutas" },
+  { nome: "Leite", preco: 4.2, categoria: "Laticínios" },
+  { nome: "Iogurte", preco: 5.5, categoria: "Laticínios" },
+  { nome: "Queijo", preco: 9.9, categoria: "Laticínios" },
+  { nome: "Sabão", preco: 3.9, categoria: "Limpeza" },
+  { nome: "Detergente", preco: 2.8, categoria: "Limpeza" },
+  { nome: "Desinfetante", preco: 5.0, categoria: "Limpeza" }
+];
 
-const emojis = {
-  maçã: "🍎",
-  banana: "🍌",
-  tomate: "🍅",
-  cenoura: "🥕",
-  leite: "🥛",
-  pão: "🍞",
-  arroz: "🍚",
-  feijão: "🫘",
-  alface: "🥬",
-  uva: "🍇",
-  laranja: "🍊"
-};
+let listaDeCompras = [];
 
-const categorias = {
-  frutas: ["maçã", "banana", "laranja", "uva"],
-  vegetais: ["cenoura", "alface", "tomate"],
-  laticínios: ["leite"]
-};
+const produtoSelect = document.getElementById("produtoSelect");
+const listaContainer = document.getElementById("listaProdutos");
+const pesquisaInput = document.getElementById("pesquisa");
+const totalSpan = document.getElementById("total");
+const btnAdicionar = document.getElementById("btnAdicionar");
+const quantidadeInput = document.getElementById("quantidade");
+const btnLimpar = document.getElementById("btnLimpar");
 
-window.onload = () => {
-  const itensSalvos = JSON.parse(localStorage.getItem("listaCompras")) || [];
-  itensSalvos.forEach(item =>
-    criarItem(item.texto, item.comprado, item.categoria, item.preco)
-  );
-};
+// Preencher select com produtos
+produtosDisponiveis.forEach((p, index) => {
+  const opt = document.createElement("option");
+  opt.value = index;
+  opt.textContent = `${p.nome} - R$${p.preco.toFixed(2)} (${p.categoria})`;
+  produtoSelect.appendChild(opt);
+});
 
-function adicionarItem() {
-  const texto = input.value.trim().toLowerCase();
-  const preco = parseFloat(precoInput.value);
+function atualizarLista() {
+  listaContainer.innerHTML = "";
+  const termo = pesquisaInput.value.toLowerCase();
 
-  if (texto === "") {
-    alert("Digite o nome do item!");
-    return;
-  }
+  const categorias = {};
 
-  if (isNaN(preco) || preco <= 0) {
-    alert("Informe um preço válido!");
-    return;
-  }
+  listaDeCompras.forEach((item, index) => {
+    if (!item.nome.toLowerCase().includes(termo)) return;
 
-  criarItem(texto, false, undefined, preco);
-  salvarLista();
-  input.value = "";
-  precoInput.value = "";
-}
-
-function criarItem(texto, comprado, categoria = detectarCategoria(texto), preco = 0) {
-  const li = document.createElement("li");
-  li.className = comprado ? "comprado" : "";
-  li.dataset.categoria = categoria;
-  li.dataset.preco = preco;
-
-  const emoji = emojis[texto] ? emojis[texto] + " " : "";
-  const precoFormatado = preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
-  li.innerHTML = `
-    <span onclick="alternarComprado(this)">
-      ${emoji}${texto} <small>(${categoria})</small> - <strong>${precoFormatado}</strong>
-    </span>
-    <button onclick="removerItem(this)">❌</button>
-  `;
-
-  lista.appendChild(li);
-  atualizarContador();
-}
-
-function detectarCategoria(texto) {
-  for (let cat in categorias) {
-    if (categorias[cat].includes(texto)) return cat;
-  }
-  return "outros";
-}
-
-function alternarComprado(span) {
-  span.parentElement.classList.toggle("comprado");
-  salvarLista();
-  atualizarContador();
-}
-
-function removerItem(btn) {
-  const li = btn.parentElement;
-  li.classList.add("removendo");
-  setTimeout(() => {
-    li.remove();
-    salvarLista();
-    atualizarContador();
-  }, 300);
-}
-
-function limparLista() {
-  if (confirm("Tem certeza que deseja limpar toda a lista?")) {
-    lista.innerHTML = "";
-    localStorage.removeItem("listaCompras");
-    atualizarContador();
-  }
-}
-
-function salvarLista() {
-  const itens = Array.from(lista.children).map(li => ({
-    texto: li.textContent.replace("❌", "").trim().replace(/.+/, "").replace(/- R\$.*$/, "").trim(),
-    comprado: li.classList.contains("comprado"),
-    categoria: li.dataset.categoria,
-    preco: parseFloat(li.dataset.preco)
-  }));
-  localStorage.setItem("listaCompras", JSON.stringify(itens));
-}
-
-function filtrarCategoria() {
-  const filtro = document.getElementById("filtro").value;
-  Array.from(lista.children).forEach(li => {
-    if (filtro === "todos" || li.dataset.categoria === filtro) {
-      li.style.display = "flex";
-    } else {
-      li.style.display = "none";
-    }
+    if (!categorias[item.categoria]) categorias[item.categoria] = [];
+    categorias[item.categoria].push({ ...item, index });
   });
+
+  let total = 0;
+
+  for (const cat in categorias) {
+    const secao = document.createElement("div");
+    secao.classList.add("categoria");
+    secao.innerHTML = `<h2>${cat}</h2>`;
+
+    categorias[cat].forEach(prod => {
+      const div = document.createElement("div");
+      div.className = `produto${prod.riscado ? " riscado" : ""}`;
+      div.innerHTML = `
+        <span>${prod.nome} - R$ ${prod.preco.toFixed(2)} x ${prod.quantidade}</span>
+        <span>Subtotal: R$ ${(prod.preco * prod.quantidade).toFixed(2)}</span>
+      `;
+      div.addEventListener("click", () => {
+        listaDeCompras[prod.index].riscado = !listaDeCompras[prod.index].riscado;
+        atualizarLista();
+      });
+      secao.appendChild(div);
+      total += prod.preco * prod.quantidade;
+    });
+
+    listaContainer.appendChild(secao);
+  }
+
+  totalSpan.textContent = total.toFixed(2);
 }
 
-function atualizarContador() {
-  const total = lista.children.length;
-  const comprados = Array.from(lista.children).filter(li => li.classList.contains("comprado")).length;
-  const totalGasto = Array.from(lista.children).reduce((soma, li) => {
-    return soma + (li.classList.contains("comprado") ? parseFloat(li.dataset.preco) : 0);
-  }, 0);
+btnAdicionar.addEventListener("click", () => {
+  const produtoSelecionado = produtosDisponiveis[produtoSelect.value];
+  const quantidade = parseInt(quantidadeInput.value);
 
-  document.getElementById("contador").textContent = `${total} itens | ${comprados} comprados`;
-  document.getElementById("total").textContent = `Total: R$ ${totalGasto.toFixed(2).replace(".", ",")}`;
-}
+  if (quantidade <= 0 || isNaN(quantidade)) {
+    alert("Informe uma quantidade válida!");
+    return;
+  }
+
+  const existente = listaDeCompras.find(p => p.nome === produtoSelecionado.nome);
+  if (existente) {
+    existente.quantidade += quantidade;
+  } else {
+    listaDeCompras.push({
+      ...produtoSelecionado,
+      quantidade,
+      riscado: false
+    });
+  }
+
+  atualizarLista();
+  quantidadeInput.value = 1;
+});
+
+pesquisaInput.addEventListener("input", atualizarLista);
+
+btnLimpar.addEventListener("click", () => {
+  if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
+    listaDeCompras = [];
+    atualizarLista();
+  }
+});
+
+atualizarLista();

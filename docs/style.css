@@ -1,148 +1,99 @@
 body {
+  background: url("images/lista.png") no-repeat center center fixed;
+  background-size: cover;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f0f8f4;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
 
-.container {
-  background: #ffffff;
+.lista-compras {
+  background-color: rgba(240, 255, 240, 0.95);
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 30px;
   border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 500px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 }
 
 
 h1 {
-  color: #2e7d32;
   text-align: center;
+  color: #2a682a;
 }
 
 
-.input-section {
+.filtros,
+.adicionar {
   display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
 }
 
 
-input[type="text"],
-input[type="number"] {
-  flex: 1 1 45%;
-  padding: 0.75rem;
-  border: 2px solid #81c784;
+.filtros input,
+.adicionar input,
+.adicionar select {
+  padding: 10px;
+  font-size: 1em;
   border-radius: 10px;
-  font-size: 1rem;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
 }
 
 
-button {
-  background-color: #66bb6a;
+#adicionar,
+#btnLimpar {
+  background-color: #2a682a;
   color: white;
   border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-
-button:hover {
-  background-color: #4caf50;
-}
-
-
-.limpar {
-  margin-top: 1rem;
-  width: 100%;
-  background-color: #ef5350;
-}
-
-
-.limpar:hover {
-  background-color: #e53935;
-}
-
-
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: bold;
-}
-
-
-.filtro-bar {
-  margin-bottom: 1rem;
-}
-
-
-select {
-  width: 100%;
-  padding: 0.5rem;
   border-radius: 8px;
-  border: 1px solid #66bb6a;
-  background: #f1f8e9;
-}
-
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-
-li {
-  background-color: #e8f5e9;
-  border: 1px solid #c8e6c9;
-  border-radius: 10px;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: fadeInSlide 0.3s ease-in-out;
-  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
-}
-
-
-li.comprado {
-  text-decoration: line-through;
-  color: #999;
-  background-color: #cfd8dc;
-  transform: scale(0.98);
-}
-
-
-li span {
+  padding: 10px 15px;
   cursor: pointer;
 }
 
 
-.removendo {
-  opacity: 0;
-  transform: translateX(50px);
+#btnLimpar {
+  margin-top: 20px;
+  width: 100%;
 }
 
 
-@keyframes fadeInSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.categoria {
+  margin-top: 20px;
+}
+
+
+.categoria h2 {
+  color: #444;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+}
+
+
+.produto {
+  background-color: #e3f2fd;
+  border-left: 8px solid #2196f3;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.produto.riscado {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+
+.total {
+  margin-top: 25px;
+  text-align: right;
+  font-size: 1.2em;
+  font-weight: bold;
 }
