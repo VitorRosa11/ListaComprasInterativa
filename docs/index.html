@@ -12,23 +12,23 @@
 
 
     <form id="form-produto">
-      <input type="text" id="nome" placeholder="Nome do produto" list="sugestoes-produtos" required />
-      <datalist id="sugestoes-produtos"></datalist>
-
-
       <select id="categoria" required>
         <option value="">Selecione a categoria</option>
-        <option value="Frutas">Frutas</option>
-        <option value="Legumes">Legumes</option>
-        <option value="Verduras">Verduras</option>
-        <option value="Padaria">Padaria</option>
-        <option value="Açougue">Açougue</option>
-        <option value="Limpeza">Limpeza</option>
-        <option value="Laticínios">Laticínios</option>
-        <option value="Mercearia">Mercearia</option>
-        <option value="Higiene">Higiene</option>
-        <option value="Produtos Variados">Produtos Variados</option>
+        <option value="Frutas">🍎 Frutas</option>
+        <option value="Legumes">🥕 Legumes</option>
+        <option value="Verduras">🥬 Verduras</option>
+        <option value="Padaria">🥖 Padaria</option>
+        <option value="Açougue">🥩 Açougue</option>
+        <option value="Limpeza">🧼 Limpeza</option>
+        <option value="Laticínios">🧀 Laticínios</option>
+        <option value="Mercearia">🛒 Mercearia</option>
+        <option value="Higiene">🧴 Higiene</option>
+        <option value="Produtos Variados">📦 Produtos Variados</option>
       </select>
+
+
+      <input type="text" id="nome" placeholder="Nome do produto" list="sugestoes-produtos" required />
+      <datalist id="sugestoes-produtos"></datalist>
 
 
       <input type="number" id="quantidade" placeholder="Quantidade" required />
@@ -39,6 +39,7 @@
 
     <div class="lista" id="lista-compras"></div>
     <div class="total" id="total"></div>
+    <button id="limpar-lista">Limpar Lista</button>
   </div>
 
 
