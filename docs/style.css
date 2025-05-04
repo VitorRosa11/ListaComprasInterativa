@@ -35,6 +35,7 @@ h1 {
 .filtros input,
 .adicionar input,
 .adicionar select {
+  width: 100%;
   padding: 10px;
   font-size: 1em;
   border-radius: 10px;
@@ -62,32 +63,59 @@ h1 {
 
 
 .categoria {
-  margin-top: 20px;
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #4caf50;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 
 .categoria h2 {
-  color: #444;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 5px;
+  color: #2e7d32;
+  margin-bottom: 10px;
+  font-size: 1.3em;
 }
 
 
 .produto {
-  background-color: #e3f2fd;
-  border-left: 8px solid #2196f3;
-  padding: 15px;
-  margin: 10px 0;
+  flex-direction: column;
+  background-color: #fff;
+  border-left: 8px solid #81c784;
+  padding: 12px;
+  margin: 8px 0;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+@media (max-width: 600px){
+  .lista-compras {
+    padding: 15px;
+  }
+  .filtros, .adicionar {
+    flex-direction: column;
+  }
+}
+
+.produto:hover {
+  background-color: #f1f8e9;
+  cursor: pointer;
 }
 
 
 .produto.riscado {
   text-decoration: line-through;
-  opacity: 0.6;
+  opacity: 0.5;
+}
+
+select optgroup {
+  font-weight: bold;
+  color: #2e7d32;
+  background-color: #e8f5e9;
 }
 
 

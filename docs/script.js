@@ -26,12 +26,25 @@ const quantidadeInput = document.getElementById("quantidade");
 const btnLimpar = document.getElementById("btnLimpar");
 
 // Preencher select com produtos
+const categoriasMap = {};
 produtosDisponiveis.forEach((p, index) => {
-  const opt = document.createElement("option");
-  opt.value = index;
-  opt.textContent = `${p.nome} - R$${p.preco.toFixed(2)} (${p.categoria})`;
-  produtoSelect.appendChild(opt);
+  if(categoriasMap[p.categoria]){
+    categoriasMap[p.categoria] = [];
+  }
+  categoriasMap[p.categoria].push({...p, index});
 });
+for (const cat in categoriasMap){
+  const group = document.createElement("optgroup");
+  group.label = cat;
+
+  categoriasMap[cat].forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.index;
+    opt.textContent = `${p.nome} - R$${p.preco.toFixed(2)}`;
+    group.appendChild(opt);
+  });
+  produtoSelect.appendChild(group);
+}
 
 function atualizarLista() {
   listaContainer.innerHTML = "";
