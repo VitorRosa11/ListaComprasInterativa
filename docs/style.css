@@ -24,7 +24,7 @@ h1 {
 
 
 .filtros,
-.adicionar {
+.btnAdicionar {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
@@ -33,8 +33,8 @@ h1 {
 
 
 .filtros input,
-.adicionar input,
-.adicionar select {
+.btnAdicionar input,
+.btnAdicionar select {
   width: 100%;
   padding: 10px;
   font-size: 1em;
@@ -45,7 +45,7 @@ h1 {
 }
 
 
-#adicionar,
+#btnAdicionar,
 #btnLimpar {
   background-color: #2a682a;
   color: white;
@@ -59,6 +59,11 @@ h1 {
 #btnLimpar {
   margin-top: 20px;
   width: 100%;
+}
+
+#btnAdicionar:hover, #btnLimpar:hover {
+  background-color: #d32f2f;
+  transition: background-color 0.2s ease;
 }
 
 
@@ -124,4 +129,50 @@ select optgroup {
   text-align: right;
   font-size: 1.2em;
   font-weight: bold;
+}
+
+.sugestoes {
+  list-style: none;
+  padding: 0;
+  margin-top: -10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0 0 10px 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  width: calc(100% - 20px);
+  z-index: 10;
+}
+
+.sugestoes li {
+  padding: 10px;
+  cursor:pointer;
+}
+
+.sugestoes li:hover {
+  background-color: #f1f1f1;
+}
+
+.autocomplete.list {
+  list-style: none;
+  padding: 0;
+  margin-top: -10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 8px 8px;
+  position: absolute;
+  width: calc(100% - 20px);
+  z-index: 10;
+}
+
+.autocomplete.list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete.list li:hover {
+  background-color: #e0e0e0;
 }

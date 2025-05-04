@@ -1,3 +1,5 @@
+const sugestoesList = document.getElementById("sugestoes");
+
 const produtosDisponiveis = [
   { nome: "Maçã", preco: 2.5, categoria: "Frutas" },
   { nome: "Banana", preco: 2.1, categoria: "Frutas" },
@@ -28,7 +30,7 @@ const btnLimpar = document.getElementById("btnLimpar");
 // Preencher select com produtos
 const categoriasMap = {};
 produtosDisponiveis.forEach((p, index) => {
-  if(categoriasMap[p.categoria]){
+  if(!categoriasMap[p.categoria]){
     categoriasMap[p.categoria] = [];
   }
   categoriasMap[p.categoria].push({...p, index});
@@ -78,7 +80,9 @@ function atualizarLista() {
         atualizarLista();
       });
       secao.appendChild(div);
-      total += prod.preco * prod.quantidade;
+      if(!prod.riscado) {
+        total += prod.preco * prod.quantidade; 
+      }
     });
 
     listaContainer.appendChild(secao);
@@ -111,13 +115,33 @@ btnAdicionar.addEventListener("click", () => {
   quantidadeInput.value = 1;
 });
 
-pesquisaInput.addEventListener("input", atualizarLista);
+const sugestoesList = document.getElementById("sugestoes");
 
-btnLimpar.addEventListener("click", () => {
-  if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
-    listaDeCompras = [];
-    atualizarLista();
-  }
+pesquisaInput.addEventListener("input", () => {
+  const termo = pesquisaInput.value.toLowerCase();
+  atualizarLista();
+
+  sugestoesList.innerHTML = "";
+
+  if(termo.length === 0) return;
+
+  const correspondencias = produtosDisponiveis.filter(p => p.nome.toLocaleLowerCase().includes(termo));
+  correspondencias.forEach(p => {
+    const li = document.createElement("li");
+    li.textContent = p.nome;
+    li.addEventListener("click", () => {
+      pesquisaInput.value = p.nome;
+      sugestoesList.innerHTML = "";
+      atualizarLista();
+    });
+    sugestoesList.appendChild(li);
+  });
 });
 
-atualizarLista();
+
+  document.addEventListener("click", (e) => {
+    if(!pesquisaInput.contains(e.target) && !sugestoesList.contains(e.target)){
+      sugestoesList.innerHTML = "";
+    };
+  });
+
