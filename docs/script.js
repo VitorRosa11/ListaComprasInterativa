@@ -115,7 +115,7 @@ btnAdicionar.addEventListener("click", () => {
   quantidadeInput.value = 1;
 });
 
-const sugestoesList = document.getElementById("sugestoes");
+
 
 pesquisaInput.addEventListener("input", () => {
   const termo = pesquisaInput.value.toLowerCase();
@@ -130,10 +130,20 @@ pesquisaInput.addEventListener("input", () => {
     const li = document.createElement("li");
     li.textContent = p.nome;
     li.addEventListener("click", () => {
-      pesquisaInput.value = p.nome;
+      pesquisaInput.value = "";
       sugestoesList.innerHTML = "";
+
+      const existente = listaDeCompras.find(prod => prod.nome === p.nome);
+      if (existente) {
+        existente.quantidade += 1;
+      } else {
+        listaDeCompras.push({
+          ...p, quantidade: 1, riscado: false
+        });
+      }
       atualizarLista();
     });
+    
     sugestoesList.appendChild(li);
   });
 });
