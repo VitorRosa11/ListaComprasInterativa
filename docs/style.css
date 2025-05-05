@@ -21,7 +21,7 @@ min-height: 100vh;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 }
 
-h1 {
+h2 {
   text-align: center;
   background-color: #2e7d32 ;
   color: #a50f0f;
@@ -29,7 +29,7 @@ h1 {
 }
 
 
-h2 {
+h1 {
   text-align: center;
   color: #2a682a;
 }
