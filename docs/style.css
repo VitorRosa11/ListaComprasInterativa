@@ -13,16 +13,23 @@ min-height: 100vh;
 .lista-compras {
   background-color: rgba(240, 255, 240, 0.95);
   max-width: 700px;
-  width: 90%;
+  width: 100%;
   min-height: 80vh;
-  margin: 40px auto;
+  margin: 90px auto;
   padding: 40px 30px;
-  border-radius: 20px;
+  border-radius: 50px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 }
 
-
 h1 {
+  text-align: center;
+  background-color: #2e7d32 ;
+  color: #a50f0f;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+h2 {
   text-align: center;
   color: #2a682a;
 }
