@@ -41,7 +41,7 @@ const produtosDisponiveis = [
   {nome: "Shampoo", preco: 7.5, categoria: "Limpeza"},
   {nome: "Pasta de dente", preco: 6.0, categoria: "Limpeza"},
   {nome: "Álcool em gel", preco: 4.5, categoria: "Limpeza"}
-  
+   
 ];
 
 let listaDeCompras = [];
@@ -53,6 +53,15 @@ const totalSpan = document.getElementById("total");
 const btnAdicionar = document.getElementById("btnAdicionar");
 const quantidadeInput = document.getElementById("quantidade");
 const btnLimpar = document.getElementById("btnLimpar");
+
+btnLimpar.addEventListener("click", () => {
+  if(confirm("Tem certeza que deseja limpar toda a sua lista?")){
+    listaDeCompras = [];
+    atualizarLista();
+
+    localStorage.removeItem("listaDeCompras");
+  };
+});
 
 // Preencher select com produtos
 const categoriasMap = {};

@@ -13,8 +13,10 @@ min-height: 100vh;
 .lista-compras {
   background-color: rgba(240, 255, 240, 0.95);
   max-width: 700px;
-  margin: 60px auto;
-  padding: 30px;
+  width: 90%;
+  min-height: 80vh;
+  margin: 40px auto;
+  padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 }
