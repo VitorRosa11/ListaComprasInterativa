@@ -27,6 +27,18 @@ const produtosDisponiveis = [
   {nome: "Pimenta", preco: 1.8 , categoria: "Legumes"},
   {nome: "Tomate", preco: 2.0 , categoria: "Legumes"},
   { nome: "Morango", preco: 5.5, categoria: "Frutas" },
+  {nome: "Alface", preco: 3.5, categoria: "Verduras"},
+  {nome: "Alface-americana", preco: 4.2 , categoria: "Verduras"},
+  {nome: "Alface-crespa", preco: 3.8 , categoria: "Verduras"},
+  {nome: "Repoulho", preco: 5.0 , categoria: "Verduras"},
+  {nome: "Couve", preco: 5.5 , categoria: "Verduras"},
+  {nome: "Rúcula", preco: 5.2 , categoria: "Verduras"},
+  {nome: "Brócolis", preco: 7.0 , categoria: "Verduras"},
+  {nome: "Espinafre", preco: 7.5 , categoria: "Verduras"},
+  {nome: "Louro", preco: 5.5 , categoria: "Verduras"},
+  {nome: "Hortelã", preco: 3.9 , categoria: "Verduras"},
+  {nome: "Orégano", preco: 2.2 , categoria: "Verduras"},
+  {nome: "Manjericão", preco: 2.5 , categoria: "Verduras"},
   { nome: "Leite", preco: 4.2, categoria: "Laticínios" },
   { nome: "Iogurte", preco: 5.5, categoria: "Laticínios" },
   { nome: "Manteiga", preco: 5.5, categoria: "Laticínios" },
@@ -40,7 +52,38 @@ const produtosDisponiveis = [
   {nome: "Sabonete", preco: 3.0, categoria: "Limpeza"},
   {nome: "Shampoo", preco: 7.5, categoria: "Limpeza"},
   {nome: "Pasta de dente", preco: 6.0, categoria: "Limpeza"},
-  {nome: "Álcool em gel", preco: 4.5, categoria: "Limpeza"}
+  {nome: "Álcool em gel", preco: 4.5, categoria: "Limpeza"},
+  {nome: "Pão francês", preco: 1.0 , categoria: "Padaria"},
+  {nome: "Pão de leite", preco: 7.5 , categoria: "Padaria"},
+  {nome: "Pão de aipim", preco: 7.5 , categoria: "Padaria"},
+  {nome: "Pão d'água", preco: 7.0 , categoria: "Padaria"},
+  {nome: "Pão baguete", preco: 5.5 , categoria: "Padaria"},
+  {nome: "Pão francês integral", preco: 1.8 , categoria: "Padaria"},
+  {nome: "Pão cervejinha", preco: 1.2 , categoria: "Padaria"},
+  {nome: "Broa de fubá", preco: 1.2 , categoria: "Padaria"},
+  {nome: "Broa de coco", preco: 1.2, categoria: "Padaria"},
+  {nome: "Broa de maizena", preco: 1.2, categoria: "Padaria"},
+  {nome: "Bolo de milho", preco: 1.2 , categoria: "Padaria"},
+  {nome: "Bolo de laranja", preco: 7.5, categoria: "Padaria"},
+  {nome: "Bolo formigueiro", preco: 8.0, categoria: "Padaria"},
+  {nome: "Bolo mesclado", preco: 8.0, categoria: "Padaria"},
+  {nome: "Bolo de chocolate", preco: 8.5 , categoria: "Padaria"},
+  {nome: "Bolo de limão", preco: 8.5 , categoria: "Padaria"},
+  {nome: "Folhado de frango", preco: 6.0, categoria: "Padaria"},
+  {nome: "Folhado de frango com catupiry", preco: 7.0, categoria: "Padaria"},
+  {nome: "Folhado de calabresa", preco: 7.0 , categoria: "Padaria"},
+  {nome: "Pastel de carne", preco: 6.5 , categoria: "Padaria"},
+  {nome: "Pastel de frango", preco: 6.0 , categoria: "Padaria"},
+  {nome: "Pastel de carne e queijo", preco: 7.5 , categoria: "Padaria"},
+  {nome: "Mini-pizza de calabresa", preco: 1.2 , categoria: "Padaria"},
+  {nome: "Mini-pizza de frango", preco: 1.0 , categoria: "Padaria"},
+  {nome: "Risóles de carne", preco: 6.5 , categoria: "Padaria"},
+  {nome: "Risóles de frango", preco: 6.0 , categoria: "Padaria"},
+  {nome: "Enroladinho de salsicha", preco: 4.0 , categoria: "Padaria"},
+  {nome: "Pão de queijo", preco: 2.2 , categoria: "Padaria"},
+  {nome: "Empada de frango com catupiry", preco: 5.5 , categoria: "Padaria"},
+  {nome: "Croissant de chocolate", preco: 7.5, categoria: "Padaria"},
+  {nome: "Croissant de presunto e queijo", preco: 8.0, categoria: "Padaria"}
    
 ];
 
@@ -125,6 +168,11 @@ function atualizarLista() {
   }
 
   totalSpan.textContent = total.toFixed(2);
+
+  /*Aqui*/
+
+  const mensagemVazia = document.getElementById("mensagemVazia");
+  mensagemVazia.style.display = listaDeCompras.length === 0 ? "block" : "none";
 }
 
 btnAdicionar.addEventListener("click", () => {
@@ -178,7 +226,12 @@ pesquisaInput.addEventListener("input", () => {
         });
       }
       atualizarLista();
-    });
+
+      const indexSelecionado = produtosDisponiveis.findIndex(prod => prod.nome === p.nome);
+      if(indexSelecionado !== -1) {
+        produtoSelect.value = indexSelecionado
+      }
+        });
     
     sugestoesList.appendChild(li);
   });
@@ -188,6 +241,23 @@ pesquisaInput.addEventListener("input", () => {
   document.addEventListener("click", (e) => {
     if(!pesquisaInput.contains(e.target) && !sugestoesList.contains(e.target)){
       sugestoesList.innerHTML = "";
-    };
-  });
+    }
+
+    
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const salva = localStorage.getItem("listaDeCompras");
+      if (salva) {
+        listaDeCompras = JSON.parse(salva);
+        atualizarLista();
+      }
+    });
+
+    const observer = new MutationObserver(() => {
+      localStorage.setItem("listaDeCompras", JSON.stringify(listaDeCompras));
+    });
+    observer.observe(listaContainer, { childList: true, subtree: true});
+
+   
 

@@ -201,3 +201,16 @@ select optgroup {
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
+
+.mensagem-vazia {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #d9534f;
+  background-color: #fcebea;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px rgba(217, 83, 79, 0.2);
+  transition: opacity 0.3s ease;
+}
